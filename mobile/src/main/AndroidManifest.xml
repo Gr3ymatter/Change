@@ -17,7 +17,12 @@
         </activity>
         <activity
             android:name=".ReminderDetailActivity"
-            android:label="@string/title_activity_reminder_detail" >
+            android:label="@string/title_activity_reminder_detail"
+            android:parentActivityName=".MainActivity"
+            >
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value=".MainActivity">
+                       </meta-data>
         </activity>
     </application>
 

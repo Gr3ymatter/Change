@@ -1,6 +1,7 @@
 package change.gr3ymatterstudios.com.change;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,8 @@ public class MainActivity extends Activity {
             case R.id.action_add:
             {
                 // Open New Activity
+                Intent i = new Intent(this, ReminderDetailActivity.class);
+                startActivity(i);
             }
                 return true;
             case R.id.action_settings:

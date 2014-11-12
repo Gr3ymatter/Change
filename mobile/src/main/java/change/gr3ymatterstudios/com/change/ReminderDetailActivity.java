@@ -1,12 +1,13 @@
 package change.gr3ymatterstudios.com.change;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ReminderDetailActivity extends Activity {
+public class ReminderDetailActivity extends Activity implements ReminderDetailFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +36,11 @@ public class ReminderDetailActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

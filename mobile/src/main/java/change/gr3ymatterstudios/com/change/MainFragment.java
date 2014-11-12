@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -40,6 +42,12 @@ public class MainFragment extends Fragment {
         arrayAdapter = new ArrayAdapter<String>(getActivity(),R.layout.priority_item_textview, R.id.item_textview, fakePriorities);
         ListView view = (ListView)rootView.findViewById(R.id.listView_priorities);
         view.setAdapter(arrayAdapter);
+        view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+            }
+        });
         return rootView;
     }
 
