@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  * Created by Afzal on 11/11/14.
  */
 public class MainFragment extends Fragment {
-    ArrayAdapter<String> arrayAdapter;
+    ExcerciseViewAdapter arrayAdapter;
 
     public MainFragment() {
     }
@@ -39,16 +40,34 @@ public class MainFragment extends Fragment {
         fakePriorities.add("Be Happy");
         fakePriorities.add("Make your life mean something");
 
-        arrayAdapter = new ArrayAdapter<String>(getActivity(),R.layout.priority_item_textview, R.id.item_textview, fakePriorities);
+
         ListView view = (ListView)rootView.findViewById(R.id.listView_priorities);
-        view.setAdapter(arrayAdapter);
+        view.setAdapter(new ExcerciseViewAdapter(fakePriorities));
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), ((View)parent.getItemAtPosition(position)).findViewById(R.id.excercise_title).toString(), Toast.LENGTH_LONG).show();
             }
         });
         return rootView;
+    }
+
+
+    class ExcerciseViewAdapter extends ArrayAdapter<String>{
+
+        public ExcerciseViewAdapter(ArrayList<String> excercise){
+            super(getActivity(),R.layout.excercise_row,R.id.excercise_title, excercise);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = super.getView(position, convertView, parent);
+
+            Button button = (Button)row.findViewById(R.id.view_Details_button);
+
+
+            return row;
+        }
     }
 
 }
