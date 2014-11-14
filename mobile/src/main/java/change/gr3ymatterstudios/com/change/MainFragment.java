@@ -46,7 +46,7 @@ public class MainFragment extends Fragment {
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), ((View)parent.getItemAtPosition(position)).findViewById(R.id.excercise_title).toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), (parent.getItemAtPosition(position)).toString(), Toast.LENGTH_LONG).show();
             }
         });
         return rootView;
