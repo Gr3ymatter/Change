@@ -1,5 +1,4 @@
 package change.gr3ymatterstudios.com.change;
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,7 +41,7 @@ public class MainFragment extends Fragment {
 
 
         ListView view = (ListView)rootView.findViewById(R.id.listView_priorities);
-        view.setAdapter(new ExcerciseViewAdapter(fakePriorities));
+        view.setAdapter(new ExcerciseViewAdapter(fakePriorities))
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
