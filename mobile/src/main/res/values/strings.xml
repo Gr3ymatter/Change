@@ -6,5 +6,10 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_reminder_detail">ReminderDetailActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="excercise_title_hint">Enter Excercise Name</string>
+    <string name="increment">+</string>
+    <string name="decrement">-</string>
+    <string name="textView_set">Sets</string>
+    <string name="textView_targetWeight">Target Weight</string>
 
 </resources>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:id="@+id/excercise_title_editText"
+              android:hint="@string/excercise_title_hint"
+              android:layout_gravity="left"
+        />
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center">
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:layout_weight=".5"
+            >
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="@string/textView_set"
+                      android:layout_gravity="center"/>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                          android:gravity="center">
+
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:id="@+id/decrement_set_button"
+                        android:text="@string/decrement"
+                        android:layout_gravity="center"
+                        android:focusable="false"/>
+
+                <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:id="@+id/edit_set_no"
+                          android:layout_gravity="bottom"
+                          android:text="1"/>
+
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:id="@+id/increment_set_button"
+                        android:text="@string/increment"
+                        android:layout_gravity="center"
+                        android:focusable="false"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:layout_weight=".5">
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="@string/textView_targetWeight"
+                      android:layout_gravity="center"
+                  />
+
+
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                          android:gravity="center">
+
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:id="@+id/decrement_weight_button"
+                        android:text="@string/decrement"
+                        android:layout_gravity="center"
+                        android:focusable="false"/>
+
+                <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:id="@+id/edit_target_weight_no"
+                          android:layout_gravity="bottom"
+                          android:text="1"/>
+
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:id="@+id/increment_weight_button"
+                        android:text="@string/increment"
+                        android:layout_gravity="center"
+                        android:focusable="false"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+
+</LinearLayout>

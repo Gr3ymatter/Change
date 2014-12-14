@@ -15,7 +15,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new MainFragment())
+                    .add(R.id.container, new RoutineFragment())
                     .commit();
         }
     }
@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
             case R.id.action_add:
             {
                 // Open New Activity
-                Intent i = new Intent(this, ReminderDetailActivity.class);
+                Intent i = new Intent(this, RoutineDetailActivity.class);
                 startActivity(i);
             }
                 return true;

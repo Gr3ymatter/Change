@@ -7,14 +7,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ReminderDetailActivity extends Activity implements ReminderDetailFragment.OnFragmentInteractionListener{
+public class RoutineDetailActivity extends Activity implements RoutineDetailFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reminder_detail);
+        setContentView(R.layout.activity_routine_detail);
         if(savedInstanceState == null ){
-            getFragmentManager().beginTransaction().add(R.id.detailContainer, new ReminderDetailFragment()).commit();
+            getFragmentManager().beginTransaction().add(R.id.detailContainer, new RoutineDetailFragment()).commit();
         }
     }
 
