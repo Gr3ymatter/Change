@@ -25,6 +25,15 @@ public class Routine {
         return mTitle;
     }
 
+
+    public UUID getID() {
+        return mID;
+    }
+
+    public void setID(UUID ID) {
+        mID = ID;
+    }
+
     public void addExcercise(Excercise excercise){
        Excercises.add(excercise);
     }

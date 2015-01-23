@@ -1,13 +1,24 @@
 package change.gr3ymatterstudios.com.change;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.UUID;
 
 
 /**
@@ -19,15 +30,20 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  *
  */
+
+
+
 public class RoutineDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String EXTRA_ROUTINE_ID = "ROUTINE_ID";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private UUID routineID;
     private String mParam2;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -35,16 +51,14 @@ public class RoutineDetailFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment ReminderDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RoutineDetailFragment newInstance(String param1, String param2) {
+    public static RoutineDetailFragment newInstance(UUID routineID) {
         RoutineDetailFragment fragment = new RoutineDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(EXTRA_ROUTINE_ID, routineID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,7 +70,7 @@ public class RoutineDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            routineID = (UUID)getArguments().getSerializable(EXTRA_ROUTINE_ID);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -65,7 +79,25 @@ public class RoutineDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_routine, container, false);
+
+        Routine routine = RoutineListViewFragment.mRoutineManager.getRoutine(routineID);
+
+        getActivity().setTitle(routine.toString());
+
+        View rootView = inflater.inflate(R.layout.fragment_listview, container, false);
+
+        final ListView excerciseList = (ListView) rootView.findViewById(R.id.listView_routines);
+        excerciseList.setAdapter(new ExcerciseListViewAdapter(routine.getExcercise()));
+        excerciseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String  excerciseId = ((Excercise)parent.getItemAtPosition(position)).getTitle();
+                Intent i = new Intent(getActivity(), StatsViewActivity.class);
+                startActivity(i);
+            }
+        });
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +122,151 @@ public class RoutineDetailFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+//
+//    class ExpandableListViewAdapter extends BaseExpandableListAdapter{
+//
+//        ArrayList<Excercise> mExcercises;
+//        private Activity mActivity;
+//        private LayoutInflater mLayoutInflater;
+//
+//        public ExpandableListViewAdapter(LayoutInflater inflater, ArrayList<Excercise> excercises) {
+//            this.mExcercises = excercises;
+//            mLayoutInflater = inflater;
+//        }
+//
+//
+//        @Override
+//        public int getGroupTypeCount() {
+//            return super.getGroupTypeCount();
+//        }
+//
+//        @Override
+//        public int getChildType(int groupPosition, int childPosition) {
+//            return super.getChildType(groupPosition, childPosition);
+//        }
+//
+//        @Override
+//        public int getChildTypeCount() {
+//            return super.getChildTypeCount();
+//        }
+//
+//        @Override
+//        public int getGroupType(int groupPosition) {
+//            return super.getGroupType(groupPosition);
+//        }
+//
+//        @Override
+//        public int getGroupCount() {
+//            return mExcercises.size();
+//        }
+//
+//        @Override
+//        public int getChildrenCount(int groupPosition) {
+//            return mExcercises.get(groupPosition).getReps().size();
+//        }
+//
+//        @Override
+//        public Object getGroup(int groupPosition) {
+//            return null;
+//        }
+//
+//        @Override
+//        public Object getChild(int groupPosition, int childPosition) {
+//           ArrayList<Integer> reps = mExcercises.get(groupPosition).getReps();
+//           String childTextView = "Set#" + childPosition + 1 + " with " + reps.get(childPosition) + " reps @ " + mExcercises.get(groupPosition).getWeight(childPosition);
+//            return childTextView;
+//        }
+//
+//        @Override
+//        public long getGroupId(int groupPosition) {
+//            return 0;
+//        }
+//
+//        @Override
+//        public long getChildId(int groupPosition, int childPosition) {
+//            return childPosition;
+//        }
+//
+//        @Override
+//        public boolean hasStableIds() {
+//            return false;
+//        }
+//
+//        @Override
+//        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+//            String excerciseTitle = mExcercises.get(groupPosition).getTitle();
+//                convertView = mLayoutInflater.inflate(R.layout.routine_detail_row, null);
+//
+//
+//            TextView exTitle = (TextView)convertView.findViewById(R.id.excercise_title_textView);
+//            exTitle.setText(excerciseTitle);
+//            return convertView;
+//        }
+//
+//        @Override
+//        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+//
+//            String childString = (String)getChild(groupPosition, childPosition);
+//
+//                convertView = mLayoutInflater.inflate(R.layout.fragment_routine_set_info_list,null);
+//
+//            TextView infoView = (TextView)convertView.findViewById(R.id.info_textView);
+//            infoView.setText(childString);
+//
+//            return convertView;
+//        }
+//
+//        @Override
+//        public boolean isChildSelectable(int groupPosition, int childPosition) {
+//            return false;
+//        }
+//    }
+
+
+    class ExcerciseListViewAdapter extends ArrayAdapter<Excercise>
+    {
+        public ExcerciseListViewAdapter(ArrayList<Excercise> excercises){
+            super(getActivity(),R.layout.routine_detail_row,R.id.excercise_title_textView, excercises);
+        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = super.getView(position, convertView, parent);
+            final Excercise excercise = getItem(position);
+            LinearLayout excerciseDetailContainer = (LinearLayout)row.findViewById(R.id.linearLayout_exercise_detail);
+            if(excercise.getReps().size() != 0){
+                String size = Integer.toString(excercise.getReps().size());
+                ArrayList reps = excercise.getReps();
+                for(int i = 0; i<excercise.getReps().size(); i++){
+                    TextView setInfo = new TextView(getContext());
+                    int setNo = 1+i;
+                    setInfo.setGravity(Gravity.CENTER);
+                    setInfo.setText("Set #" + setNo + ": " + excercise.getReps().get(i) + " reps @ " + excercise.getWeight(i));
+                    excerciseDetailContainer.addView(setInfo, i);
+                }
+
+
+
+               ImageView stats = (ImageView) row.findViewById(R.id.excercise_stats_imageView);
+
+                stats.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getContext(), "Clicked Image View of " + excercise.getTitle() , Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+            }
+            else
+            {
+                TextView nodetails = new TextView(getContext());
+            }
+            return row;
+        }
     }
 
     /**

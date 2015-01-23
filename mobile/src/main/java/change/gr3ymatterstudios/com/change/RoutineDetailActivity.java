@@ -6,15 +6,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.UUID;
+
 
 public class RoutineDetailActivity extends Activity implements RoutineDetailFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_routine_detail);
+        setContentView(R.layout.activity_main);
+        UUID routine_info = (UUID)getIntent().getSerializableExtra(RoutineListViewFragment.EXTRA_ROUTINE_ID);
+
         if(savedInstanceState == null ){
-            getFragmentManager().beginTransaction().add(R.id.detailContainer, new RoutineDetailFragment()).commit();
+            getFragmentManager().beginTransaction().add(R.id.container, RoutineDetailFragment.newInstance(routine_info)).commit();
         }
     }
 

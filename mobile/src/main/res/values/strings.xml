@@ -12,4 +12,6 @@
     <string name="textView_set">Sets</string>
     <string name="textView_targetWeight">Target Weight</string>
 
+    <string name="dummy_section_text">Section %1d is just a dummy section.</string>
+
 </resources>

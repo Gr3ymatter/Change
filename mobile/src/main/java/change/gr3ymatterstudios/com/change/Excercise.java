@@ -26,6 +26,11 @@ public class Excercise {
         mWeight = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return mTitle;
+    }
+
     public int getMaxWeight() {
         return mMaxWeight;
     }
