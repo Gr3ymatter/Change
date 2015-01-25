@@ -97,7 +97,12 @@ public class RoutineContract {
          * https://www.udacity.com/course/viewer#!/c-ud853/l-1576308909/e-1604969848/m-1604969849
          **/
 
-
+        /**
+         * What do i want from this table?
+         * 1) Information about previous session of a specific routine. - RoutineListView
+         * 2) Information about a specific exercise for all logged sessions -ExerciseDetailView
+         * 3) Directory Information about routine from a specific start date to current - Calendar View
+         */
 
 
         // Table Name
@@ -118,7 +123,33 @@ public class RoutineContract {
         //Max Weight Lifted
         public static final String COLUMN_MAX_WEIGHT = "max_weight";
 
+        public static Uri buildRoutineEntryUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+
+        //Returns a DIR of A specific Routine on Selectable Dates
+        public static Uri buildRoutineEntryRoutineDateUri(String RoutineName, String Date){
+            return CONTENT_URI.buildUpon().appendPath(RoutineName).appendQueryParameter(COLUMN_DATETEXT, Date).build();
+        }
+
+        //Returns a Dir of specific exercise for selectable logged sessions
+        public static Uri buildRoutineEntryExerciseDate(String RoutineTitle, String ExerciseId, String Date){
+            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_DATETEXT, Date).appendQueryParameter(COLUMN_EXERCISE_KEY, ExerciseId).appendQueryParameter(COLUMN_TITLE, RoutineTitle).build();
+        }
+
+
+        public static String getRoutineNameFromUri(Uri uri){return uri.getPathSegments().get(0);}
+
+        public static String getStartDateFromUri(Uri uri){ return uri.getQueryParameter(COLUMN_DATETEXT);}
+
+        public static String getExerciseIdFromUri(Uri uri){ return uri.getQueryParameter(COLUMN_EXERCISE_KEY);}
+
+
+
     }
+
+
 
     /*
     /* Inner class that defines the table contents of the weather table */
@@ -133,8 +164,10 @@ public class RoutineContract {
         public static final String COLUMN_TOTAL_WEIGHT_LIFTED = "total_weight";
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EXERCISE).build();
+
         public static final String CONTENT_ITEM_TYPE =
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_EXERCISE;
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_EXERCISE;
 
 
         public static Uri buildExerciseUri(long id) {
@@ -145,6 +178,7 @@ public class RoutineContract {
             return CONTENT_URI.buildUpon().appendPath(category).build();
         }
 
+        //TODO: Potentially Remove
         public static Uri buildExerciseWeightUri(String weight){
             return CONTENT_URI.buildUpon().appendPath(weight).build();
         }
@@ -155,8 +189,10 @@ public class RoutineContract {
 
 
         public static String getCategoryFromUri(Uri uri){
-            return uri.getPathSegments().get(1);
+            return uri.getPathSegments().get(0);
         }
+
+        public static String getWeightFromUri(Uri uri) { return uri.getQueryParameter(COLUMN_TOTAL_WEIGHT_LIFTED);}
 
 
 

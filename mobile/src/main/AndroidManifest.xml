@@ -33,6 +33,10 @@
                        android:value=".MainPagerActivity">
             </meta-data>
         </activity>
+        
+        <provider android:authorities="change.gr3ymatterstudios.com.change" android:name=".data.RoutineProvider"></provider>
+        
+        
     </application>
 
 </manifest>
