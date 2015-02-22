@@ -17,7 +17,7 @@ public class RoutineProvider extends ContentProvider {
 
     private static final int ROUTINE = 100;
     private static final int ROUTINE_WITH_DATE = 101;
-    private static final int EXERCISE_WITH_DATE_OPTIONAL_ROUTNE = 102;
+    private static final int EXERCISE_WITH_DATE_OPTIONAL_ROUTINE = 102;
 
     private static final int EXERCISE = 200;
     private static final int EXERCISE_WITH_ID = 201;
@@ -31,7 +31,7 @@ public class RoutineProvider extends ContentProvider {
 
         matcher.addURI(authority, RoutineContract.PATH_ROUTINE, ROUTINE);
         matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*", ROUTINE_WITH_DATE);
-        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*/*/*", EXERCISE_WITH_DATE_OPTIONAL_ROUTNE);
+        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*/*/*", EXERCISE_WITH_DATE_OPTIONAL_ROUTINE);
 
         matcher.addURI(authority, RoutineContract.PATH_EXERCISE, EXERCISE);
         matcher.addURI(authority, RoutineContract.PATH_EXERCISE + "/#", EXERCISE_WITH_ID);
@@ -52,7 +52,23 @@ public class RoutineProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+
+        switch(match){
+            case ROUTINE:
+                return RoutineContract.RoutineEntry.CONTENT_TYPE;
+            case ROUTINE_WITH_DATE:
+                return RoutineContract.RoutineEntry.CONTENT_TYPE;
+            case EXERCISE_WITH_DATE_OPTIONAL_ROUTINE:
+                return RoutineContract.RoutineEntry.CONTENT_TYPE;
+            case EXERCISE:
+                return RoutineContract.ExerciseEntry.CONTENT_TYPE;
+            case EXERCISE_WITH_ID:
+                return RoutineContract.ExerciseEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown Uri: " + uri);
+        }
+
     }
 
     @Override

@@ -25,6 +25,26 @@ public class TestProvider extends AndroidTestCase {
         mContext.deleteDatabase(RoutineDbHelper.DATABASE_NAME);
     }
 
+
+    public void testGetType() throws Throwable{
+
+        String type = mContext.getContentResolver().getType(RoutineEntry.CONTENT_URI);
+
+        assertEquals(RoutineEntry.CONTENT_TYPE, type);
+
+
+        type = mContext.getContentResolver().getType(RoutineEntry.buildRoutineEntryRoutineDateUri("Chest Day", "20151413"));
+
+        assertEquals(RoutineEntry.CONTENT_TYPE, type);
+
+
+        type = mContext.getContentResolver().getType(ExerciseEntry.buildExerciseUri(2L));
+
+        assertEquals(ExerciseEntry.CONTENT_ITEM_TYPE, type);
+
+    }
+
+
     public void testInsertReadDB() throws Throwable{
 
         SQLiteDatabase db = new RoutineDbHelper(this.mContext).getWritableDatabase();

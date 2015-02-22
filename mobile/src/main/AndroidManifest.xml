@@ -34,7 +34,7 @@
             </meta-data>
         </activity>
         
-        <provider android:authorities="change.gr3ymatterstudios.com.change" android:name=".data.RoutineProvider"></provider>
+        <provider android:authorities="com.gr3ymatterstudios.change" android:name=".data.RoutineProvider"></provider>
         
         
     </application>
