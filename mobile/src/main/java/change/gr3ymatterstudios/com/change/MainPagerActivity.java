@@ -38,7 +38,7 @@ public class MainPagerActivity extends FragmentActivity implements UserStateView
         super.onCreate(savedInstanceState);
 
 
-        setContentView(R.layout.activity_tabsview_layout);
+        setContentView(R.layout.activity_tabsview);
 
         if (savedInstanceState == null) {
 
