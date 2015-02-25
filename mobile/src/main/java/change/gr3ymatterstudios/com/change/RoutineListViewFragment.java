@@ -62,6 +62,9 @@ public class RoutineListViewFragment extends android.support.v4.app.Fragment {
     }
 
 
+    /*
+    Adapter class to bind views with information in each row of the Routine List
+     */
     class RoutineViewAdapter extends ArrayAdapter<Routine>{
 
         public RoutineViewAdapter(ArrayList<Routine> excercise){

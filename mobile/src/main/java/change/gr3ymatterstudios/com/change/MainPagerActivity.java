@@ -54,7 +54,10 @@ public class MainPagerActivity extends FragmentActivity implements UserStateView
                 }
 
             });
+            mTablayout.setDistributeEvenly(true);
+            mViewPager.setCurrentItem(1);
             mTablayout.setViewPager(mViewPager);
+
 
         }
     }
