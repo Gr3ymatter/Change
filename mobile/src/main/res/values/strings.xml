@@ -13,5 +13,8 @@
     <string name="textView_targetWeight">Target Weight</string>
 
     <string name="dummy_section_text">Section %1d is just a dummy section.</string>
+    <string name="title_activity_routine_edit">RoutineEditActivity</string>
+    <string name="title_activity_calendar_view">CalendarViewActivity</string>
+    <string name="title_activity_start_workout">StartWorkoutActivity</string>
 
 </resources>

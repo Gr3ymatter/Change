@@ -12,31 +12,46 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".RoutineDetailActivity"
             android:label="@string/title_activity_reminder_detail"
-            android:parentActivityName=".MainPagerActivity"
-            >
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value=".MainPagerActivity">
-                       </meta-data>
+            android:parentActivityName=".MainPagerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainPagerActivity" >
+            </meta-data>
         </activity>
         <activity
             android:name=".StatsViewActivity"
             android:label="@string/title_activity_reminder_detail"
-            android:parentActivityName=".MainPagerActivity"
-            >
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value=".MainPagerActivity">
+            android:parentActivityName=".MainPagerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainPagerActivity" >
             </meta-data>
         </activity>
-        
-        <provider android:authorities="com.gr3ymatterstudios.change" android:name=".data.RoutineProvider"></provider>
-        
-        
+
+        <provider
+            android:name=".data.RoutineProvider"
+            android:authorities="com.gr3ymatterstudios.change" />
+
+        <activity
+            android:name=".RoutineEditActivity"
+            android:label="@string/title_activity_routine_edit"
+            android:parentActivityName=".MainPagerActivity" >
+        </activity>
+        <activity
+            android:name=".CalendarViewActivity"
+            android:label="@string/title_activity_calendar_view" >
+        </activity>
+        <activity
+            android:name=".StartWorkoutActivity"
+            android:label="@string/title_activity_start_workout" >
+        </activity>
     </application>
 
 </manifest>

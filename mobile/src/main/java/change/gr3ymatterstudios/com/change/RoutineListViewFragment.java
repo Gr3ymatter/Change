@@ -58,6 +58,8 @@ public class RoutineListViewFragment extends android.support.v4.app.Fragment {
                 startActivity(i);
             }
         });
+
+
         return rootView;
     }
 
@@ -72,13 +74,24 @@ public class RoutineListViewFragment extends android.support.v4.app.Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             View row = super.getView(position, convertView, parent);
 
             //Button button = (Button)row.findViewById(R.id.view_Details_button);
             TextView daysCompleted = (TextView)row.findViewById(R.id.daysCompleted_textView);
             daysCompleted.setText("Days Completed: 4");
             ImageView startImage = (ImageView)row.findViewById(R.id.start_routine_imageView);
+
+
+            startImage.setOnClickListener(new View.OnClickListener() {
+                Routine routine = (Routine)getItem(position);
+                UUID uuid = (UUID)routine.getID();
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), StartWorkoutActivity.class).putExtra(EXTRA_ROUTINE_ID, uuid);
+                    startActivity(i);
+                }
+            });
 
             return row;
         }

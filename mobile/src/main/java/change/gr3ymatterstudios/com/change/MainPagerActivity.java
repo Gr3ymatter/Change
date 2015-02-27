@@ -1,6 +1,7 @@
 package change.gr3ymatterstudios.com.change;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -47,15 +48,10 @@ public class MainPagerActivity extends FragmentActivity implements UserStateView
             mViewPager.setAdapter(new MainViewPagerAdapter(fm));
 
             mTablayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-            mTablayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-                @Override
-                public int getIndicatorColor(int position) {
-                    return 0;
-                }
-
-            });
             mTablayout.setDistributeEvenly(true);
+            mTablayout.setSelectedIndicatorColors(Color.CYAN);
             mViewPager.setCurrentItem(1);
+
             mTablayout.setViewPager(mViewPager);
 
 
@@ -79,9 +75,13 @@ public class MainPagerActivity extends FragmentActivity implements UserStateView
             case R.id.action_add:
             {
                 // Open New Activity
-                Intent i = new Intent(this, RoutineDetailActivity.class);
+                Intent i = new Intent(this, RoutineEditActivity.class);
                 startActivity(i);
             }
+                return true;
+            case R.id.action_calendar:
+                Intent i = new Intent(this, CalendarViewActivity.class);
+                startActivity(i);
                 return true;
             case R.id.action_settings:
                 return true;

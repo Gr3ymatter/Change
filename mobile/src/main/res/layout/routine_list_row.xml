@@ -25,6 +25,8 @@
                  android:layout_gravity="right|center_vertical"
                  android:background="@drawable/dumbbell_48_x_48"
                  android:layout_margin="8dp"
+                 android:focusable="false"
+                 android:clickable="true"
                  android:layout_alignParentRight="true"
                  android:layout_centerVertical="true"
         />

@@ -82,7 +82,7 @@ public class RoutineDetailFragment extends Fragment {
 
         Routine routine = RoutineListViewFragment.mRoutineManager.getRoutine(routineID);
 
-        getActivity().setTitle(routine.toString());
+      //  getActivity().setTitle(routine.toString());
 
         View rootView = inflater.inflate(R.layout.fragment_listview, container, false);
 
