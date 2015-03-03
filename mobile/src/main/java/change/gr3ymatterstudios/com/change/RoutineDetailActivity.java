@@ -8,7 +8,10 @@ import android.view.MenuItem;
 
 import java.util.UUID;
 
-
+/**
+ * This Activity Hosts the Routine Detail Fragment, which is a list of exercises in that specific workout routine.
+ *
+ */
 public class RoutineDetailActivity extends Activity implements RoutineDetailFragment.OnFragmentInteractionListener{
 
     @Override

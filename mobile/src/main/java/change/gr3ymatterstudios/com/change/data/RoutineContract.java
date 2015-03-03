@@ -13,10 +13,7 @@ public class RoutineContract {
     // relationship between a domain name and its website.  A convenient string to use for the
     // content authority is the package name for the app, which is guaranteed to be unique on the
     // device.
-    /* TODO Uncomment for
-    4b - Adding ContentProvider to our Contract
-    https://www.udacity.com/course/viewer#!/c-ud853/l-1576308909/m-1637521471
-    */
+
     public static final String CONTENT_AUTHORITY = "com.gr3ymatterstudios.change";
     // Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
     // the content provider.
@@ -76,6 +73,11 @@ public class RoutineContract {
     }
     */
 
+    /**
+     * Database Contract for Routines
+     * Contains the following columns:
+     * Routine Title, Date, Exercise id, Set No, Reps, Weight, Max Weight
+     **/
     public static final class RoutineEntry implements BaseColumns {
         /**
          * TODO YOUR CODE BELOW HERE FOR QUIZ
@@ -150,9 +152,14 @@ public class RoutineContract {
     }
 
 
-
-    /*
-    /* Inner class that defines the table contents of the weather table */
+    /**
+     * Exercise Table
+     *
+     * Contains Columns:
+     * Exercise Name, Category, total_weight
+     *
+     *
+     */
     public static final class ExerciseEntry implements BaseColumns {
 
 
@@ -180,7 +187,7 @@ public class RoutineContract {
 
         //TODO: Potentially Remove
         public static Uri buildExerciseWeightUri(String weight){
-            return CONTENT_URI.buildUpon().appendPath(weight).build();
+            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_TOTAL_WEIGHT_LIFTED, weight).build();
         }
 
         public static Uri buildExerciseCategoryWeightUri(String category, String Weight){
@@ -193,41 +200,6 @@ public class RoutineContract {
         }
 
         public static String getWeightFromUri(Uri uri) { return uri.getQueryParameter(COLUMN_TOTAL_WEIGHT_LIFTED);}
-
-
-
-        /* TODO Uncomment for
-        4b - Adding ContentProvider to our Contract
-        https://www.udacity.com/course/viewer#!/c-ud853/l-1576308909/m-1637521471
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_WEATHER).build();
-        public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_WEATHER;
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_WEATHER;
-        public static Uri buildWeatherUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
-        public static Uri buildWeatherLocation(String locationSetting) {
-            return CONTENT_URI.buildUpon().appendPath(locationSetting).build();
-        }
-        public static Uri buildWeatherLocationWithStartDate(
-                String locationSetting, String startDate) {
-            return CONTENT_URI.buildUpon().appendPath(locationSetting)
-                    .appendQueryParameter(COLUMN_DATETEXT, startDate).build();
-        }
-        public static Uri buildWeatherLocationWithDate(String locationSetting, String date) {
-            return CONTENT_URI.buildUpon().appendPath(locationSetting).appendPath(date).build();
-        }
-        public static String getLocationSettingFromUri(Uri uri) {
-            return uri.getPathSegments().get(1);
-        }
-        public static String getDateFromUri(Uri uri) {
-            return uri.getPathSegments().get(2);
-        }
-        public static String getStartDateFromUri(Uri uri) {
-            return uri.getQueryParameter(COLUMN_DATETEXT);
-        }*/
 
 }
 

@@ -9,7 +9,10 @@ import change.gr3ymatterstudios.com.change.data.RoutineContract.RoutineEntry;
 
 
 /**
- * Created by Afzal on 1/9/15.
+ * Database helper file which creates the database with the following tables
+ * 1) Routine Table
+ * 2) Exercise Table
+ * 3) User Table
  */
 public class RoutineDbHelper extends SQLiteOpenHelper {
 
