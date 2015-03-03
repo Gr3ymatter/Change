@@ -11,6 +11,7 @@ import java.util.Set;
 
 import change.gr3ymatterstudios.com.change.data.RoutineContract.ExerciseEntry;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.RoutineEntry;
+import change.gr3ymatterstudios.com.change.data.RoutineContract.UserEntry;
 import change.gr3ymatterstudios.com.change.data.RoutineDbHelper;
 
 /**
@@ -33,7 +34,41 @@ public class TestDb extends AndroidTestCase {
 
         SQLiteDatabase db = new RoutineDbHelper(this.mContext).getWritableDatabase();
 
-        ContentValues values = getExerciseValues();
+        printDatabaseNames(db);
+
+        ContentValues values = getUserValues(false);
+
+        long userRowId = -1;
+
+        userRowId = db.insert(UserEntry.TABLE_NAME,null, values);
+
+        assertEquals(true, userRowId != -1);
+
+
+        Cursor cursor = db.query(UserEntry.TABLE_NAME, null, null, null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            validateCursor(values, cursor);
+        }
+
+        values = getUserValues(true);
+
+        userRowId = -1;
+
+        userRowId = db.insert(UserEntry.TABLE_NAME, null, values);
+
+        assertEquals(true, userRowId != -1);
+
+        Log.d(LOG_TAG, "New ROW ID: " + userRowId);
+
+        cursor = db.query(UserEntry.TABLE_NAME, null, null, null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            validateCursor(values, cursor);
+        }
+
+
+        values = getExerciseValues();
 
         long exerciseRowId = -1;
 
@@ -44,7 +79,7 @@ public class TestDb extends AndroidTestCase {
 
         Log.d(LOG_TAG, "New ROW ID: " + exerciseRowId);
 
-        Cursor cursor = db.query(ExerciseEntry.TABLE_NAME, null, null, null, null, null, null);
+        cursor = db.query(ExerciseEntry.TABLE_NAME, null, null, null, null, null, null);
 
         if(cursor.moveToFirst()){
 
@@ -71,6 +106,30 @@ public class TestDb extends AndroidTestCase {
 
             validateCursor(values, cursor);
         }
+
+    }
+
+    ContentValues getUserValues(boolean nullTest){
+        String user_name = "Sal";
+        ContentValues values = new ContentValues();
+        values.put(UserEntry.COLUMN_USER_NAME, user_name);
+        if(!nullTest){
+            String user_gender = "Male";
+            int user_age = 28;
+            float user_height =6.4f;
+            float user_weight = 204.f;
+            float user_bmi = 23.45f;
+            float user_goal = 210.0f;
+
+            values.put(UserEntry.COLUMN_USER_AGE, user_age);
+            values.put(UserEntry.COLUMN_USER_GENDER, user_gender);
+            values.put(UserEntry.COLUMN_USER_HEIGHT, user_height);
+            values.put(UserEntry.COLUMN_USER_WEIGHT, user_weight);
+            values.put(UserEntry.COLUMN_USER_BMI, user_bmi);
+            values.put(UserEntry.COLUMN_USER_GOAL, user_goal);
+        }
+
+        return values;
 
     }
 
@@ -111,6 +170,8 @@ public class TestDb extends AndroidTestCase {
         return values;
     }
 
+
+
     static public void validateCursor(ContentValues expectedValues, Cursor valueCursor){
         Set<Map.Entry<String, Object>> valueset = expectedValues.valueSet();
         for (Map.Entry<String, Object> entry: valueset){
@@ -119,7 +180,21 @@ public class TestDb extends AndroidTestCase {
             assertFalse( -1 == index);
             String expectedValue = entry.getValue().toString();
             assertEquals(expectedValue, valueCursor.getString(index));
+
+            Log.d("TEST_CURSOR_PRINT_TAG", valueCursor.getString(index));
+
+
         }
+    }
+
+    static public void printDatabaseNames(SQLiteDatabase db){
+
+        Cursor c  = db.rawQuery("SELECT * FROM sqlite_master WHERE type = 'table'", null);
+
+        if(c.moveToFirst()){
+            Log.d("TABLE_PRINT_LOG", c.getString(0));
+        }
+
     }
 
 }

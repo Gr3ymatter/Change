@@ -4,6 +4,8 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.net.URI;
+
 /**
  * Created by Afzal on 1/7/15.
  */
@@ -24,7 +26,7 @@ public class RoutineContract {
     // looking at weather data. content://com.example.android.sunshine.app/givemeroot/ will fail,
     // as the ContentProvider hasn't been given any information on what to do with "givemeroot".
     // At least, let's hope not.  Don't be that dev, reader.  Don't be that dev.
-    public static final String PATH_USER = "user";
+    public static final String PATH_USER = "user_info";
     public static final String PATH_ROUTINE = "routine";
     public static final String PATH_EXERCISE = "exercise";
 
@@ -72,6 +74,41 @@ public class RoutineContract {
         }
     }
     */
+
+
+    public static final class UserEntry implements BaseColumns {
+
+        public static final String TABLE_NAME = "user_info";
+        public static final String COLUMN_USER_NAME = "user_name";
+        public static final String COLUMN_USER_GENDER = "user_gender";
+        public static final String COLUMN_USER_HEIGHT = "user_height";
+        public static final String COLUMN_USER_WEIGHT = "user_weight";
+        public static final String COLUMN_USER_GOAL = "goal_weight";
+        public static final String COLUMN_USER_BMI = "user_bmi";
+        public static final String COLUMN_USER_AGE = "user_age";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_USER).build();
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_USER;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_USER;
+
+        public static Uri buildUserIDURI(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildUserNameUri(String name){
+            return CONTENT_URI.buildUpon().appendPath(COLUMN_USER_NAME).build();
+        }
+
+        public static String getUserNameFromUri(Uri uri){
+            return uri.getPathSegments().get(0);
+        }
+
+
+    }
+
 
     /**
      * Database Contract for Routines

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import change.gr3ymatterstudios.com.change.data.RoutineContract.ExerciseEntry;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.RoutineEntry;
-
+import change.gr3ymatterstudios.com.change.data.RoutineContract.UserEntry;
 
 /**
  * Database helper file which creates the database with the following tables
@@ -52,6 +52,17 @@ public class RoutineDbHelper extends SQLiteOpenHelper {
                 RoutineEntry.COLUMN_SET + ") ON CONFLICT REPLACE );";
 
 
+        final String SQL_CREATE_USER_TABLE = "CREATE TABLE " + UserEntry.TABLE_NAME + " (" +
+                UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                UserEntry.COLUMN_USER_NAME + " TEXT NOT NULL, " +
+                UserEntry.COLUMN_USER_AGE + " INTEGER, " +
+                UserEntry.COLUMN_USER_GENDER + " TEXT, " +
+                UserEntry.COLUMN_USER_HEIGHT + " REAL, " +
+                UserEntry.COLUMN_USER_WEIGHT + " REAL, " +
+                UserEntry.COLUMN_USER_BMI + " REAL, " +
+                UserEntry.COLUMN_USER_GOAL + " REAL);";
+
+        db.execSQL(SQL_CREATE_USER_TABLE);
         db.execSQL(SQL_CREATE_EXERCISE_TABLE);
         db.execSQL(SQL_CREATE_ROUTINE_TABLE);
     }
@@ -59,6 +70,7 @@ public class RoutineDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        db.execSQL("DROP TABLE IF EXISTS" + UserEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + RoutineEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ExerciseEntry.TABLE_NAME);
         onCreate(db);
