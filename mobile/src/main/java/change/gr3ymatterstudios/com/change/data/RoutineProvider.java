@@ -50,7 +50,34 @@ public class RoutineProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+
+        final int match = sUriMatcher.match(uri);
+        Cursor retCursor;
+        switch(match){
+            case USER_NAME:
+                retCursor = getUserNameInfo(uri, projection, sortOrder);
+                break;
+            case ROUTINE:
+                retCursor = getRoutineInformation(uri, projection, sortOrder);
+                break;
+            case ROUTINE_WITH_DATE:
+                retCursor = getRoutineInfoOnDate(uri, projection, sortOrder);
+                break;
+            case EXERCISE_WITH_DATE_OPTIONAL_ROUTINE:
+                retCursor = getExercioseInfoOnDateOfRoutine(uri, projection, sortOrder);
+                break;
+            case EXERCISE:
+                retCursor = getAllExercise(uri, projection, sortOrder);
+                break;
+            case EXERCISE_WITH_ID:
+                retCursor = getSpecificExercise(uri, projection, sortOrder);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown Uri: " + uri);
+
+        }
+        retCursor.setNotificationUri(this.getContext().getContentResolver(), uri);
+        return retCursor;
     }
 
     @Override
