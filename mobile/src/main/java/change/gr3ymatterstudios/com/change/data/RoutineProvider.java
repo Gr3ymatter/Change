@@ -15,23 +15,26 @@ public class RoutineProvider extends ContentProvider {
     private RoutineDbHelper mOpenHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
-    private static final int ROUTINE = 100;
-    private static final int ROUTINE_WITH_DATE = 101;
-    private static final int EXERCISE_WITH_DATE_OPTIONAL_ROUTINE = 102;
 
-    private static final int EXERCISE = 200;
-    private static final int EXERCISE_WITH_ID = 201;
+    public static final int USER_NAME = 99;
+    public static final int ROUTINE = 100;
+    public static final int ROUTINE_WITH_DATE = 101;
+    public static final int EXERCISE_WITH_DATE_OPTIONAL_ROUTINE = 102;
+
+    public static final int EXERCISE = 200;
+    public static final int EXERCISE_WITH_ID = 201;
 
 
-    private static UriMatcher buildUriMatcher(){
+    public static UriMatcher buildUriMatcher(){
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = RoutineContract.CONTENT_AUTHORITY;
 
 
+        matcher.addURI(authority, RoutineContract.PATH_USER + "/*", USER_NAME);
         matcher.addURI(authority, RoutineContract.PATH_ROUTINE, ROUTINE);
         matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*", ROUTINE_WITH_DATE);
-        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*/*/*", EXERCISE_WITH_DATE_OPTIONAL_ROUTINE);
+        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*/*", EXERCISE_WITH_DATE_OPTIONAL_ROUTINE);
 
         matcher.addURI(authority, RoutineContract.PATH_EXERCISE, EXERCISE);
         matcher.addURI(authority, RoutineContract.PATH_EXERCISE + "/#", EXERCISE_WITH_ID);
@@ -55,6 +58,8 @@ public class RoutineProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
 
         switch(match){
+            case USER_NAME:
+                return RoutineContract.UserEntry.CONTENT_TYPE;
             case ROUTINE:
                 return RoutineContract.RoutineEntry.CONTENT_TYPE;
             case ROUTINE_WITH_DATE:

@@ -173,8 +173,8 @@ public class RoutineContract {
         }
 
         //Returns a Dir of specific exercise for selectable logged sessions
-        public static Uri buildRoutineEntryExerciseDate(String RoutineTitle, String ExerciseId, String Date){
-            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_DATETEXT, Date).appendQueryParameter(COLUMN_EXERCISE_KEY, ExerciseId).appendQueryParameter(COLUMN_TITLE, RoutineTitle).build();
+        public static Uri buildRoutineEntryExerciseDate(String RoutineTitle, long ExerciseId, String Date){
+            return CONTENT_URI.buildUpon().appendPath(RoutineTitle).appendPath(Long.toString(ExerciseId)).appendQueryParameter(COLUMN_DATETEXT, Date).build();
         }
 
 
@@ -182,7 +182,7 @@ public class RoutineContract {
 
         public static String getStartDateFromUri(Uri uri){ return uri.getQueryParameter(COLUMN_DATETEXT);}
 
-        public static String getExerciseIdFromUri(Uri uri){ return uri.getQueryParameter(COLUMN_EXERCISE_KEY);}
+        public static String getExerciseIdFromUri(Uri uri){ return uri.getPathSegments().get(1);}
 
 
 

@@ -36,7 +36,7 @@ public class TestDb extends AndroidTestCase {
 
         printDatabaseNames(db);
 
-        ContentValues values = getUserValues(false);
+        ContentValues values = getUserValues(true);
 
         long userRowId = -1;
 
@@ -51,7 +51,7 @@ public class TestDb extends AndroidTestCase {
             validateCursor(values, cursor);
         }
 
-        values = getUserValues(true);
+        values = getUserValues(false);
 
         userRowId = -1;
 
@@ -63,7 +63,7 @@ public class TestDb extends AndroidTestCase {
 
         cursor = db.query(UserEntry.TABLE_NAME, null, null, null, null, null, null);
 
-        if(cursor.moveToFirst()){
+        if(cursor.moveToLast()){
             validateCursor(values, cursor);
         }
 
@@ -113,13 +113,13 @@ public class TestDb extends AndroidTestCase {
         String user_name = "Sal";
         ContentValues values = new ContentValues();
         values.put(UserEntry.COLUMN_USER_NAME, user_name);
-        if(!nullTest){
+        if(nullTest == false){
             String user_gender = "Male";
             int user_age = 28;
             float user_height =6.4f;
-            float user_weight = 204.f;
+            float user_weight = 204.1f;
             float user_bmi = 23.45f;
-            float user_goal = 210.0f;
+            float user_goal = 210.1f;
 
             values.put(UserEntry.COLUMN_USER_AGE, user_age);
             values.put(UserEntry.COLUMN_USER_GENDER, user_gender);

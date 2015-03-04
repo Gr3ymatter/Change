@@ -1,17 +1,21 @@
 package change.gr3ymatterstudios.com.test;
 
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
 import java.util.Map;
 import java.util.Set;
 
+import change.gr3ymatterstudios.com.change.data.RoutineContract;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.ExerciseEntry;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.RoutineEntry;
 import change.gr3ymatterstudios.com.change.data.RoutineDbHelper;
+import change.gr3ymatterstudios.com.change.data.RoutineProvider;
 
 /**
  * Created by Afzal on 1/11/15.
@@ -26,7 +30,43 @@ public class TestProvider extends AndroidTestCase {
     }
 
 
+
+    public void testUriMatcher() throws Throwable{
+
+        final String routinename = "Chest";
+        final String TEST_DATE = "20141413";
+        final String USER_NAME = "Sal";
+
+        final long exercise_id = 2L;
+
+
+        final Uri TEST_USERNAME = RoutineContract.UserEntry.buildUserNameUri(USER_NAME);
+        final Uri TEST_ROUTINE_WITH_DATE = RoutineEntry.buildRoutineEntryRoutineDateUri(routinename, TEST_DATE);
+        final Uri TEST_ROUTINE = RoutineEntry.CONTENT_URI;
+
+        final Uri TEST_EXERCISE_WITH_DATE_OPTIONAL_ROUTINE = RoutineEntry.buildRoutineEntryExerciseDate(routinename, exercise_id, TEST_DATE);
+        Log.d(LOG_TAG, TEST_EXERCISE_WITH_DATE_OPTIONAL_ROUTINE.toString());
+        final Uri TEST_EXERCISE = ExerciseEntry.CONTENT_URI;
+        final Uri TEST_EXERCISE_WITH_ID = ExerciseEntry.buildExerciseUri(exercise_id);
+
+
+        UriMatcher uriMatcher = RoutineProvider.buildUriMatcher();
+
+        assertEquals("Error: USER URI matched incorrectly.",uriMatcher.match(TEST_USERNAME), RoutineProvider.USER_NAME);
+        assertEquals("Error: ROUTINE URI matched incorrectly.",uriMatcher.match(TEST_ROUTINE), RoutineProvider.ROUTINE);
+        assertEquals("Error: ROUTINE_WITH_DATE URI matched incorrectly.",uriMatcher.match(TEST_ROUTINE_WITH_DATE), RoutineProvider.ROUTINE_WITH_DATE);
+        assertEquals("Error: TEST_EXERCISE_WITH_DATE_OPTIONAL_ROUTINE URI matched incorrectly.",uriMatcher.match(TEST_EXERCISE_WITH_DATE_OPTIONAL_ROUTINE), RoutineProvider.EXERCISE_WITH_DATE_OPTIONAL_ROUTINE);
+        assertEquals("Error: TEST_EXERCISE URI matched incorrectly.",uriMatcher.match(TEST_EXERCISE), RoutineProvider.EXERCISE);
+        assertEquals("Error: TEST_EXERCISE_WITH_ID URI matched incorrectly.",uriMatcher.match(TEST_EXERCISE_WITH_ID), RoutineProvider.EXERCISE_WITH_ID);
+
+
+
+    }
+
+
     public void testGetType() throws Throwable{
+
+
 
         String type = mContext.getContentResolver().getType(RoutineEntry.CONTENT_URI);
 
@@ -37,6 +77,10 @@ public class TestProvider extends AndroidTestCase {
 
         assertEquals(RoutineEntry.CONTENT_TYPE, type);
 
+
+        type = mContext.getContentResolver().getType(RoutineContract.UserEntry.buildUserNameUri("Sal"));
+
+        assertEquals(RoutineContract.UserEntry.CONTENT_TYPE, type);
 
         type = mContext.getContentResolver().getType(ExerciseEntry.buildExerciseUri(2L));
 
