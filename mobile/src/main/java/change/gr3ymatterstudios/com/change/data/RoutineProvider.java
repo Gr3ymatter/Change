@@ -34,7 +34,7 @@ public class RoutineProvider extends ContentProvider {
         matcher.addURI(authority, RoutineContract.PATH_USER + "/*", USER_NAME);
         matcher.addURI(authority, RoutineContract.PATH_ROUTINE, ROUTINE);
         matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*", ROUTINE_WITH_DATE);
-        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*/*", EXERCISE_WITH_DATE_OPTIONAL_ROUTINE);
+        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*/#", EXERCISE_WITH_DATE_OPTIONAL_ROUTINE);
 
         matcher.addURI(authority, RoutineContract.PATH_EXERCISE, EXERCISE);
         matcher.addURI(authority, RoutineContract.PATH_EXERCISE + "/#", EXERCISE_WITH_ID);
