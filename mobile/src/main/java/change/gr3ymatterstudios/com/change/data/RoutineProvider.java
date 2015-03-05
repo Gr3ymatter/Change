@@ -4,7 +4,12 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+
+import change.gr3ymatterstudios.com.change.data.RoutineContract.ExerciseEntry;
+import change.gr3ymatterstudios.com.change.data.RoutineContract.RoutineEntry;
+import change.gr3ymatterstudios.com.change.data.RoutineContract.UserEntry;
 
 /**
  * Created by Afzal on 1/25/15.
@@ -14,6 +19,14 @@ public class RoutineProvider extends ContentProvider {
 
     private RoutineDbHelper mOpenHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+    private static final SQLiteQueryBuilder getRoutineInfoWithExerciseAndDateBuilder;
+
+    static {
+        getRoutineInfoWithExerciseAndDateBuilder = new SQLiteQueryBuilder();
+        getRoutineInfoWithExerciseAndDateBuilder.setTables(RoutineEntry.TABLE_NAME + " INNER JOIN " +
+                ExerciseEntry.TABLE_NAME + " ON " + RoutineEntry.TABLE_NAME + "." + RoutineEntry.COLUMN_EXERCISE_KEY +
+                " = " + ExerciseEntry.TABLE_NAME + "." + ExerciseEntry._ID);
+    }
 
 
     public static final int USER_NAME = 99;
@@ -42,6 +55,18 @@ public class RoutineProvider extends ContentProvider {
         return matcher;
     }
 
+
+    private static final String sUserNameSelection = UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_USER_NAME + " = ? ";
+
+
+    public Cursor getUserNameInfo(Uri uri, String[] projection, String sortOrder){
+
+        String name = RoutineContract.UserEntry.getUserNameFromUri(uri);
+
+        return mOpenHelper.getReadableDatabase().query(UserEntry.TABLE_NAME, projection, sUserNameSelection, new String[]{name}, null, null, sortOrder);
+    }
+
+
     @Override
     public boolean onCreate() {
         mOpenHelper = new RoutineDbHelper(getContext());
@@ -64,7 +89,7 @@ public class RoutineProvider extends ContentProvider {
                 retCursor = getRoutineInfoOnDate(uri, projection, sortOrder);
                 break;
             case EXERCISE_WITH_DATE_OPTIONAL_ROUTINE:
-                retCursor = getExercioseInfoOnDateOfRoutine(uri, projection, sortOrder);
+                retCursor = getExerciseInfoOnDateOfRoutine(uri, projection, sortOrder);
                 break;
             case EXERCISE:
                 retCursor = getAllExercise(uri, projection, sortOrder);
