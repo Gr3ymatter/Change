@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
+import change.gr3ymatterstudios.com.change.Routine;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.ExerciseEntry;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.RoutineEntry;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.UserEntry;
@@ -57,15 +58,29 @@ public class RoutineProvider extends ContentProvider {
 
 
     private static final String sUserNameSelection = UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_USER_NAME + " = ? ";
+    private static final String sRoutineDateSelection = RoutineEntry.TABLE_NAME + "." + RoutineEntry.COLUMN_DATETEXT + " = ? ";
 
 
-    public Cursor getUserNameInfo(Uri uri, String[] projection, String sortOrder){
+    private Cursor getUserNameInfo(Uri uri, String[] projection, String sortOrder){
 
-        String name = RoutineContract.UserEntry.getUserNameFromUri(uri);
+        String name = UserEntry.getUserNameFromUri(uri);
 
         return mOpenHelper.getReadableDatabase().query(UserEntry.TABLE_NAME, projection, sUserNameSelection, new String[]{name}, null, null, sortOrder);
     }
 
+
+    private Cursor getRoutineInformation(Uri uri, String[] projection, String sortOrder){
+
+        return mOpenHelper.getReadableDatabase().query(RoutineEntry.TABLE_NAME, projection, null, null, null, null, sortOrder);
+    }
+
+    private Cursor getRoutineInfoOnDate(Uri uri, String[] projection, String sortOrder){
+
+        String date = RoutineEntry.getStartDateFromUri(uri);
+
+        return getRoutineInfoWithExerciseAndDateBuilder.query(mOpenHelper.getReadableDatabase(), projection, sRoutineDateSelection, new String[]{date}, null, null, null);
+
+    }
 
     @Override
     public boolean onCreate() {
