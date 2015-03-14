@@ -231,6 +231,7 @@ public class RoutineContract {
             return CONTENT_URI.buildUpon().appendPath(category).appendQueryParameter(COLUMN_TOTAL_WEIGHT_LIFTED, Weight).build();
         }
 
+        public static String getExerciseIdFromUri(Uri uri){return uri.getLastPathSegment();}
 
         public static String getCategoryFromUri(Uri uri){
             return uri.getPathSegments().get(0);

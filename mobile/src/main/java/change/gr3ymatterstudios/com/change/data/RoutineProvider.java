@@ -59,7 +59,10 @@ public class RoutineProvider extends ContentProvider {
 
     private static final String sUserNameSelection = UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_USER_NAME + " = ? ";
     private static final String sRoutineDateSelection = RoutineEntry.TABLE_NAME + "." + RoutineEntry.COLUMN_DATETEXT + " = ? ";
+    private static final String sRoutineDateExerciseSelection = RoutineEntry.TABLE_NAME + "." + RoutineEntry.COLUMN_DATETEXT + " = ? AND " +
+            RoutineEntry.TABLE_NAME + "." + RoutineEntry.COLUMN_EXERCISE_KEY + " = ? ";
 
+    private static final String sIdSelectionString = ExerciseEntry.TABLE_NAME + "." + ExerciseEntry._ID + " = ? ";
 
     private Cursor getUserNameInfo(Uri uri, String[] projection, String sortOrder){
 
@@ -80,6 +83,23 @@ public class RoutineProvider extends ContentProvider {
 
         return getRoutineInfoWithExerciseAndDateBuilder.query(mOpenHelper.getReadableDatabase(), projection, sRoutineDateSelection, new String[]{date}, null, null, null);
 
+    }
+
+    private Cursor getExerciseInfoOnDateOfRoutine(Uri uri, String[] projection, String sortOrder){
+        String date = RoutineEntry.getStartDateFromUri(uri);
+        String exerciseID = RoutineEntry.getExerciseIdFromUri(uri);
+
+        return getRoutineInfoWithExerciseAndDateBuilder.query(mOpenHelper.getReadableDatabase(), projection, sRoutineDateExerciseSelection, new String[]{date, exerciseID} ,null, null, sortOrder);
+    }
+
+    private Cursor getAllExercise(Uri uri, String[] projection, String sortOrder){
+        return mOpenHelper.getReadableDatabase().query(ExerciseEntry.TABLE_NAME, projection, null, null, null,null, sortOrder);
+    }
+
+    private Cursor getSpecificExercise(Uri uri, String[] projection, String sortOrder){
+        String id = ExerciseEntry.getExerciseIdFromUri(uri);
+
+        return mOpenHelper.getReadableDatabase().query(ExerciseEntry.TABLE_NAME, projection, sIdSelectionString, new String[]{id}, null, null, sortOrder);
     }
 
     @Override
