@@ -43,6 +43,7 @@ public class TestProvider extends AndroidTestCase {
         final Uri TEST_USERNAME = RoutineContract.UserEntry.buildUserNameUri(USER_NAME);
         final Uri TEST_ROUTINE_WITH_DATE = RoutineEntry.buildRoutineEntryRoutineDateUri(routinename, TEST_DATE);
         final Uri TEST_ROUTINE = RoutineEntry.CONTENT_URI;
+        final Uri TEST_ROUTINE_WITH_NAME = RoutineEntry.buildRoutineEntryWithNameUri(routinename);
 
         final Uri TEST_EXERCISE_WITH_DATE_OPTIONAL_ROUTINE = RoutineEntry.buildRoutineEntryExerciseDate(routinename, exercise_id, TEST_DATE);
         Log.d(LOG_TAG, TEST_EXERCISE_WITH_DATE_OPTIONAL_ROUTINE.toString());
@@ -52,9 +53,13 @@ public class TestProvider extends AndroidTestCase {
 
         UriMatcher uriMatcher = RoutineProvider.buildUriMatcher();
 
+
+
+
         assertEquals("Error: USER URI matched incorrectly.",uriMatcher.match(TEST_USERNAME), RoutineProvider.USER_NAME);
         assertEquals("Error: ROUTINE URI matched incorrectly.",uriMatcher.match(TEST_ROUTINE), RoutineProvider.ROUTINE);
-        assertEquals("Error: ROUTINE_WITH_DATE URI matched incorrectly.",uriMatcher.match(TEST_ROUTINE_WITH_DATE), RoutineProvider.ROUTINE_WITH_DATE);
+        assertEquals("Error: ROUTINE_WITH_DATE URI matched incorrectly.", uriMatcher.match(TEST_ROUTINE_WITH_DATE), RoutineProvider.ROUTINE_WITH_DATE);
+        assertEquals("Error: ROUTINE_WITH_NAME URI matched incorrectly.",uriMatcher.match(TEST_ROUTINE_WITH_NAME), RoutineProvider.ROUTINE_WITH_NAME);
         assertEquals("Error: TEST_EXERCISE_WITH_DATE_OPTIONAL_ROUTINE URI matched incorrectly.",uriMatcher.match(TEST_EXERCISE_WITH_DATE_OPTIONAL_ROUTINE), RoutineProvider.EXERCISE_WITH_DATE_OPTIONAL_ROUTINE);
         assertEquals("Error: TEST_EXERCISE URI matched incorrectly.",uriMatcher.match(TEST_EXERCISE), RoutineProvider.EXERCISE);
         assertEquals("Error: TEST_EXERCISE_WITH_ID URI matched incorrectly.",uriMatcher.match(TEST_EXERCISE_WITH_ID), RoutineProvider.EXERCISE_WITH_ID);
@@ -72,10 +77,14 @@ public class TestProvider extends AndroidTestCase {
 
         assertEquals(RoutineEntry.CONTENT_TYPE, type);
 
+        type = mContext.getContentResolver().getType(RoutineEntry.buildRoutineEntryWithNameUri("Chest Day"));
+
+        assertEquals(RoutineEntry.CONTENT_TYPE, type);
 
         type = mContext.getContentResolver().getType(RoutineEntry.buildRoutineEntryRoutineDateUri("Chest Day", "20151413"));
 
         assertEquals(RoutineEntry.CONTENT_TYPE, type);
+
 
 
         type = mContext.getContentResolver().getType(RoutineContract.UserEntry.buildUserNameUri("Sal"));
@@ -104,7 +113,9 @@ public class TestProvider extends AndroidTestCase {
 
         Log.d(LOG_TAG, "New ROW ID: " + exerciseRowId);
 
-        Cursor cursor = db.query(ExerciseEntry.TABLE_NAME, null, null, null, null, null, null);
+        Log.d(LOG_TAG, "URI: " + ExerciseEntry.buildExerciseUri(5L).toString());
+
+        Cursor cursor = mContext.getContentResolver().query(ExerciseEntry.CONTENT_URI, null, null, null, null, null);
 
         if(cursor.moveToFirst()){
 
@@ -125,12 +136,36 @@ public class TestProvider extends AndroidTestCase {
 
         assertEquals(true, routineRowId != -1);
 
-        cursor = db.query(RoutineEntry.TABLE_NAME, null,null, null, null, null, null);
+        Log.d(LOG_TAG, Long.toString(routineRowId));
+
+        Log.d(LOG_TAG, RoutineEntry.buildRoutineEntryUri(1L).toString());
+
+       cursor = mContext.getContentResolver().query(RoutineEntry.buildRoutineEntryWithNameUri("Upper Body"), null, null, null, null);
 
         if(cursor.moveToFirst()){
 
             validateCursor(values, cursor);
         }
+        else
+        {
+            Log.d(LOG_TAG, "Routine Test Failed");
+        }
+
+        cursor = mContext.getContentResolver().query(RoutineEntry.buildRoutineEntryRoutineDateUri("Upper Body", "20150405"),null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            validateCursor(values, cursor);
+        }
+        else
+        {
+            Log.d(LOG_TAG, "Routine WITH DATE Test Failed");
+        }
+
+        cursor = mContext.getContentResolver().query(RoutineEntry.buildRoutineEntryRoutineDateUri("Upper Body", "20150412"),null, null, null, null);
+
+        assertFalse(cursor.moveToFirst());
+
+
 
     }
 
@@ -179,6 +214,8 @@ public class TestProvider extends AndroidTestCase {
             assertFalse( -1 == index);
             String expectedValue = entry.getValue().toString();
             assertEquals(expectedValue, valueCursor.getString(index));
+
+            Log.d("TESTPROVIDER_PRINT_TAG", valueCursor.getString(index));
         }
     }
 

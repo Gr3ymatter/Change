@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-import change.gr3ymatterstudios.com.change.Routine;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.ExerciseEntry;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.RoutineEntry;
 import change.gr3ymatterstudios.com.change.data.RoutineContract.UserEntry;
@@ -34,6 +33,7 @@ public class RoutineProvider extends ContentProvider {
     public static final int ROUTINE = 100;
     public static final int ROUTINE_WITH_DATE = 101;
     public static final int EXERCISE_WITH_DATE_OPTIONAL_ROUTINE = 102;
+    public static final int ROUTINE_WITH_NAME = 103;
 
     public static final int EXERCISE = 200;
     public static final int EXERCISE_WITH_ID = 201;
@@ -47,8 +47,9 @@ public class RoutineProvider extends ContentProvider {
 
         matcher.addURI(authority, RoutineContract.PATH_USER + "/*", USER_NAME);
         matcher.addURI(authority, RoutineContract.PATH_ROUTINE, ROUTINE);
-        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*", ROUTINE_WITH_DATE);
-        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*/#", EXERCISE_WITH_DATE_OPTIONAL_ROUTINE);
+        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*", ROUTINE_WITH_NAME);
+        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*/" + RoutineEntry.COLUMN_DATETEXT + "/", ROUTINE_WITH_DATE);
+        matcher.addURI(authority, RoutineContract.PATH_ROUTINE + "/*/" + ExerciseEntry.TABLE_NAME + "/*", EXERCISE_WITH_DATE_OPTIONAL_ROUTINE);
 
         matcher.addURI(authority, RoutineContract.PATH_EXERCISE, EXERCISE);
         matcher.addURI(authority, RoutineContract.PATH_EXERCISE + "/#", EXERCISE_WITH_ID);
@@ -58,6 +59,7 @@ public class RoutineProvider extends ContentProvider {
 
 
     private static final String sUserNameSelection = UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_USER_NAME + " = ? ";
+    private static final String sRoutineNameSelection = RoutineEntry.TABLE_NAME + "." + RoutineEntry.COLUMN_TITLE + " = ? ";
     private static final String sRoutineDateSelection = RoutineEntry.TABLE_NAME + "." + RoutineEntry.COLUMN_DATETEXT + " = ? ";
     private static final String sRoutineDateExerciseSelection = RoutineEntry.TABLE_NAME + "." + RoutineEntry.COLUMN_DATETEXT + " = ? AND " +
             RoutineEntry.TABLE_NAME + "." + RoutineEntry.COLUMN_EXERCISE_KEY + " = ? ";
@@ -83,6 +85,13 @@ public class RoutineProvider extends ContentProvider {
 
         return getRoutineInfoWithExerciseAndDateBuilder.query(mOpenHelper.getReadableDatabase(), projection, sRoutineDateSelection, new String[]{date}, null, null, null);
 
+    }
+
+
+    private Cursor getRoutineInfoWithName(Uri uri, String[] projection, String sortOrder){
+        String name = RoutineEntry.getRoutineNameFromUri(uri);
+
+        return getRoutineInfoWithExerciseAndDateBuilder.query(mOpenHelper.getReadableDatabase(), projection, sRoutineNameSelection, new String[]{name}, null , null, null);
     }
 
     private Cursor getExerciseInfoOnDateOfRoutine(Uri uri, String[] projection, String sortOrder){
@@ -120,6 +129,9 @@ public class RoutineProvider extends ContentProvider {
             case ROUTINE:
                 retCursor = getRoutineInformation(uri, projection, sortOrder);
                 break;
+            case ROUTINE_WITH_NAME:
+                retCursor = getRoutineInfoWithName(uri, projection, sortOrder);
+                break;
             case ROUTINE_WITH_DATE:
                 retCursor = getRoutineInfoOnDate(uri, projection, sortOrder);
                 break;
@@ -149,6 +161,8 @@ public class RoutineProvider extends ContentProvider {
                 return RoutineContract.UserEntry.CONTENT_TYPE;
             case ROUTINE:
                 return RoutineContract.RoutineEntry.CONTENT_TYPE;
+            case ROUTINE_WITH_NAME:
+                return RoutineEntry.CONTENT_TYPE;
             case ROUTINE_WITH_DATE:
                 return RoutineContract.RoutineEntry.CONTENT_TYPE;
             case EXERCISE_WITH_DATE_OPTIONAL_ROUTINE:

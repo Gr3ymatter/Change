@@ -34,7 +34,6 @@ public class TestDb extends AndroidTestCase {
 
         SQLiteDatabase db = new RoutineDbHelper(this.mContext).getWritableDatabase();
 
-        printDatabaseNames(db);
 
         ContentValues values = getUserValues(true);
 
@@ -181,20 +180,11 @@ public class TestDb extends AndroidTestCase {
             String expectedValue = entry.getValue().toString();
             assertEquals(expectedValue, valueCursor.getString(index));
 
-            Log.d("TEST_CURSOR_PRINT_TAG", valueCursor.getString(index));
+//            Log.d("TEST_CURSOR_PRINT_TAG", valueCursor.getString(index));
 
 
         }
     }
 
-    static public void printDatabaseNames(SQLiteDatabase db){
-
-        Cursor c  = db.rawQuery("SELECT * FROM sqlite_master WHERE type = 'table'", null);
-
-        if(c.moveToFirst()){
-            Log.d("TABLE_PRINT_LOG", c.getString(0));
-        }
-
-    }
 
 }

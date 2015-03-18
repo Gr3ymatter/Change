@@ -6,6 +6,8 @@ import android.provider.BaseColumns;
 
 import java.net.URI;
 
+import change.gr3ymatterstudios.com.change.Routine;
+
 /**
  * Created by Afzal on 1/7/15.
  */
@@ -167,14 +169,19 @@ public class RoutineContract {
         }
 
 
+        public static Uri buildRoutineEntryWithNameUri(String RoutineTitle){
+            return CONTENT_URI.buildUpon().appendPath(RoutineTitle).build();
+        }
+
+
         //Returns a DIR of A specific Routine on Selectable Dates
         public static Uri buildRoutineEntryRoutineDateUri(String RoutineName, String Date){
-            return CONTENT_URI.buildUpon().appendPath(RoutineName).appendQueryParameter(COLUMN_DATETEXT, Date).build();
+            return CONTENT_URI.buildUpon().appendPath(RoutineName).appendPath(RoutineEntry.COLUMN_DATETEXT).appendQueryParameter(COLUMN_DATETEXT, Date).build();
         }
 
         //Returns a Dir of specific exercise for selectable logged sessions
         public static Uri buildRoutineEntryExerciseDate(String RoutineTitle, long ExerciseId, String Date){
-            return CONTENT_URI.buildUpon().appendPath(RoutineTitle).appendPath(Long.toString(ExerciseId)).appendQueryParameter(COLUMN_DATETEXT, Date).build();
+            return CONTENT_URI.buildUpon().appendPath(RoutineTitle).appendPath(ExerciseEntry.TABLE_NAME).appendPath(Long.toString(ExerciseId)).appendQueryParameter(COLUMN_DATETEXT, Date).build();
         }
 
 
@@ -182,7 +189,7 @@ public class RoutineContract {
 
         public static String getStartDateFromUri(Uri uri){ return uri.getQueryParameter(COLUMN_DATETEXT);}
 
-        public static String getExerciseIdFromUri(Uri uri){ return uri.getPathSegments().get(1);}
+        public static String getExerciseIdFromUri(Uri uri){ return uri.getPathSegments().get(2);}
 
 
 
